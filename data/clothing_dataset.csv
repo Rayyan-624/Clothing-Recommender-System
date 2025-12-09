@@ -1,0 +1,91 @@
+item_id,item_name,category,warmth_level,formality,min_temp,max_temp,weather_tags,occasion_tags,color,material
+1,Cotton T-Shirt,Top,1,2,17,31,"hot,warm","casual,sports",Blue,Nylon
+2,Cotton T-Shirt,Top,1,0,16,38,"hot,warm","casual,sports",White,Denim
+3,Cotton T-Shirt,Top,2,2,18,34,"hot,warm","casual,sports",Green,Leather
+4,Cotton T-Shirt,Top,2,2,17,34,"hot,warm","casual,sports",Green,Cotton
+5,Cotton T-Shirt,Top,1,0,14,40,"hot,warm","casual,sports",White,Nylon
+6,Long Sleeve Shirt,Top,2,4,7,27,"mild,cool","business,formal",White,Wool
+7,Long Sleeve Shirt,Top,2,2,14,29,"mild,cool","business,formal",White,Denim
+8,Long Sleeve Shirt,Top,1,3,10,24,"mild,cool","business,formal",Blue,Leather
+9,Long Sleeve Shirt,Top,1,3,11,23,"mild,cool","business,formal",Green,Denim
+10,Long Sleeve Shirt,Top,3,2,14,25,"mild,cool","business,formal",Blue,Denim
+11,Wool Sweater,Top,3,3,-1,18,"cool,cold","business,formal,casual",Blue,Wool
+12,Wool Sweater,Top,3,2,-5,18,"cool,cold","business,formal,casual",White,Denim
+13,Wool Sweater,Top,5,4,0,23,"cool,cold","business,formal,casual",Gray,Nylon
+14,Wool Sweater,Top,4,2,4,25,"cool,cold","business,formal,casual",Gray,Leather
+15,Wool Sweater,Top,5,4,-2,17,"cool,cold","business,formal,casual",Black,Wool
+16,Light Jacket,Outerwear,4,2,8,21,"mild,cool","casual,outdoor",Blue,Polyester
+17,Light Jacket,Outerwear,4,3,3,22,"mild,cool","casual,outdoor",Green,Cotton
+18,Light Jacket,Outerwear,4,1,0,29,"mild,cool","casual,outdoor",Gray,Nylon
+19,Light Jacket,Outerwear,3,2,7,20,"mild,cool","casual,outdoor",Black,Wool
+20,Light Jacket,Outerwear,3,1,7,29,"mild,cool","casual,outdoor",Red,Polyester
+21,Heavy Winter Coat,Outerwear,6,3,-4,15,"cold,freezing","formal,casual",Red,Leather
+22,Heavy Winter Coat,Outerwear,5,3,-9,19,"cold,freezing","formal,casual",Black,Wool
+23,Heavy Winter Coat,Outerwear,4,2,-2,12,"cold,freezing","formal,casual",Black,Leather
+24,Heavy Winter Coat,Outerwear,5,2,-2,16,"cold,freezing","formal,casual",Blue,Leather
+25,Heavy Winter Coat,Outerwear,5,4,0,12,"cold,freezing","formal,casual",White,Cotton
+26,Raincoat,Outerwear,3,2,8,20,rainy,"outdoor,casual",Brown,Leather
+27,Raincoat,Outerwear,2,3,7,28,rainy,"outdoor,casual",White,Nylon
+28,Raincoat,Outerwear,3,1,11,29,rainy,"outdoor,casual",Gray,Wool
+29,Raincoat,Outerwear,1,1,13,20,rainy,"outdoor,casual",Black,Denim
+30,Raincoat,Outerwear,1,3,11,20,rainy,"outdoor,casual",Black,Nylon
+31,Shorts,Bottom,1,0,23,30,hot,"casual,sports",Red,Polyester
+32,Shorts,Bottom,1,1,21,36,hot,"casual,sports",Black,Polyester
+33,Shorts,Bottom,2,2,21,37,hot,"casual,sports",White,Leather
+34,Shorts,Bottom,0,2,22,33,hot,"casual,sports",Gray,Leather
+35,Shorts,Bottom,0,1,23,38,hot,"casual,sports",Green,Nylon
+36,Jeans,Bottom,4,3,10,27,"mild,cool,cold",casual,Green,Leather
+37,Jeans,Bottom,4,2,6,35,"mild,cool,cold",casual,White,Nylon
+38,Jeans,Bottom,3,3,7,34,"mild,cool,cold",casual,Black,Polyester
+39,Jeans,Bottom,2,1,4,34,"mild,cool,cold",casual,White,Polyester
+40,Jeans,Bottom,4,3,9,35,"mild,cool,cold",casual,Gray,Denim
+41,Dress Pants,Bottom,2,3,12,30,"mild,cool","business,formal",Black,Polyester
+42,Dress Pants,Bottom,2,4,14,20,"mild,cool","business,formal",Black,Leather
+43,Dress Pants,Bottom,3,5,5,24,"mild,cool","business,formal",Black,Polyester
+44,Dress Pants,Bottom,2,4,12,20,"mild,cool","business,formal",Black,Leather
+45,Dress Pants,Bottom,4,3,14,29,"mild,cool","business,formal",Blue,Nylon
+46,Skirt,Bottom,2,4,10,32,"mild,warm","casual,formal",Green,Polyester
+47,Skirt,Bottom,3,3,17,30,"mild,warm","casual,formal",Blue,Polyester
+48,Skirt,Bottom,1,2,20,31,"mild,warm","casual,formal",Green,Wool
+49,Skirt,Bottom,2,4,15,26,"mild,warm","casual,formal",Gray,Polyester
+50,Skirt,Bottom,1,2,19,29,"mild,warm","casual,formal",Brown,Wool
+51,Running Shoes,Footwear,3,0,-13,37,all,"sports,casual",Black,Nylon
+52,Running Shoes,Footwear,2,1,-8,43,all,"sports,casual",Gray,Polyester
+53,Running Shoes,Footwear,3,2,-8,45,all,"sports,casual",Brown,Wool
+54,Running Shoes,Footwear,1,2,-15,41,all,"sports,casual",Gray,Cotton
+55,Running Shoes,Footwear,1,1,-13,36,all,"sports,casual",Black,Leather
+56,Leather Shoes,Footwear,3,4,14,25,"mild,cool","business,formal",Brown,Wool
+57,Leather Shoes,Footwear,2,5,10,23,"mild,cool","business,formal",Blue,Nylon
+58,Leather Shoes,Footwear,2,5,13,21,"mild,cool","business,formal",Gray,Cotton
+59,Leather Shoes,Footwear,2,5,13,25,"mild,cool","business,formal",Red,Nylon
+60,Leather Shoes,Footwear,2,4,14,23,"mild,cool","business,formal",Black,Nylon
+61,Boots,Footwear,3,3,-3,16,"cool,cold,rainy","casual,formal",White,Leather
+62,Boots,Footwear,3,4,2,25,"cool,cold,rainy","casual,formal",Gray,Leather
+63,Boots,Footwear,5,4,-3,17,"cool,cold,rainy","casual,formal",Brown,Nylon
+64,Boots,Footwear,4,4,-5,18,"cool,cold,rainy","casual,formal",Green,Denim
+65,Boots,Footwear,4,2,5,20,"cool,cold,rainy","casual,formal",Brown,Denim
+66,Sandals,Footwear,2,2,24,39,"hot,warm","casual,beach",Blue,Polyester
+67,Sandals,Footwear,0,1,23,40,"hot,warm","casual,beach",Blue,Wool
+68,Sandals,Footwear,0,1,25,40,"hot,warm","casual,beach",Gray,Cotton
+69,Sandals,Footwear,0,1,20,35,"hot,warm","casual,beach",Blue,Wool
+70,Sandals,Footwear,1,3,20,36,"hot,warm","casual,beach",White,Nylon
+71,Baseball Cap,Accessory,1,1,10,30,sunny,"casual,sports",Blue,Polyester
+72,Baseball Cap,Accessory,2,0,10,33,sunny,"casual,sports",Gray,Nylon
+73,Baseball Cap,Accessory,0,1,15,37,sunny,"casual,sports",Gray,Leather
+74,Baseball Cap,Accessory,0,2,19,37,sunny,"casual,sports",Green,Nylon
+75,Baseball Cap,Accessory,0,2,14,30,sunny,"casual,sports",Blue,Denim
+76,Umbrella,Accessory,0,2,-3,32,rainy,all,Black,Cotton
+77,Umbrella,Accessory,1,1,2,31,rainy,all,Gray,Leather
+78,Umbrella,Accessory,1,1,-5,31,rainy,all,White,Polyester
+79,Umbrella,Accessory,0,2,-1,35,rainy,all,Brown,Leather
+80,Umbrella,Accessory,1,1,0,28,rainy,all,Brown,Polyester
+81,Scarf,Accessory,2,3,4,15,"cool,cold","casual,formal",White,Cotton
+82,Scarf,Accessory,3,2,1,16,"cool,cold","casual,formal",Gray,Polyester
+83,Scarf,Accessory,2,2,-4,24,"cool,cold","casual,formal",Red,Nylon
+84,Scarf,Accessory,4,3,3,21,"cool,cold","casual,formal",Green,Wool
+85,Scarf,Accessory,2,3,3,24,"cool,cold","casual,formal",Gray,Leather
+86,Sunglasses,Accessory,0,1,19,39,sunny,casual,Blue,Nylon
+87,Sunglasses,Accessory,1,2,19,39,sunny,casual,Black,Denim
+88,Sunglasses,Accessory,2,3,16,39,sunny,casual,Black,Polyester
+89,Sunglasses,Accessory,0,3,14,38,sunny,casual,Green,Nylon
+90,Sunglasses,Accessory,1,1,17,32,sunny,casual,White,Denim

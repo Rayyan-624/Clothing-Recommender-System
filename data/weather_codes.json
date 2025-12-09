@@ -1,0 +1,77 @@
+{
+  "sunny": {
+    "temp_range": [
+      20,
+      35
+    ],
+    "conditions": [
+      "clear"
+    ]
+  },
+  "cloudy": {
+    "temp_range": [
+      10,
+      25
+    ],
+    "conditions": [
+      "clouds"
+    ]
+  },
+  "rainy": {
+    "temp_range": [
+      5,
+      20
+    ],
+    "conditions": [
+      "rain",
+      "drizzle"
+    ]
+  },
+  "snowy": {
+    "temp_range": [
+      -10,
+      5
+    ],
+    "conditions": [
+      "snow"
+    ]
+  },
+  "windy": {
+    "temp_range": [
+      5,
+      25
+    ],
+    "conditions": [
+      "wind"
+    ]
+  },
+  "hot": {
+    "temp_range": [
+      28,
+      40
+    ],
+    "conditions": [
+      "clear"
+    ]
+  },
+  "cold": {
+    "temp_range": [
+      -10,
+      10
+    ],
+    "conditions": [
+      "clear",
+      "clouds"
+    ]
+  },
+  "mild": {
+    "temp_range": [
+      15,
+      25
+    ],
+    "conditions": [
+      "clear",
+      "clouds"
+    ]
+  }
+}
