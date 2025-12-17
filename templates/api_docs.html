@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Documentation - Daily Clothing Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .api-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+        
+        .api-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+        
+        .api-header h1 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .back-button {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            text-decoration: none;
+            margin-bottom: 30px;
+            transition: background 0.3s ease;
+        }
+        
+        .back-button:hover {
+            background: #5568d3;
+        }
+        
+        .endpoint-section {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+        
+        .endpoint-section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.8rem;
+        }
+        
+        .endpoint-section h3 {
+            color: #333;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+        
+        .method-badge {
+            display: inline-block;
+            background: #10b981;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            font-weight: bold;
+            margin-right: 10px;
+            font-size: 0.9rem;
+        }
+        
+        .endpoint-url {
+            background: #f5f7fa;
+            padding: 15px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            border-left: 4px solid #667eea;
+        }
+        
+        .code-block {
+            background: #2d3748;
+            color: #f7fafc;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 15px 0;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+        }
+        
+        .params-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        
+        .params-table th,
+        .params-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .params-table th {
+            background: #f7fafc;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .required-badge {
+            background: #ef4444;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+        
+        .optional-badge {
+            background: #94a3b8;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 3px;
+            font-size: 0.75rem;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="api-container">
+        <a href="/" class="back-button">
+            <i class="fas fa-arrow-left"></i> Back to Home
+        </a>
+        
+        <div class="api-header">
+            <h1><i class="fas fa-code"></i> API Documentation</h1>
+            <p>RESTful API for clothing recommendations</p>
+        </div>
+        
+        <div class="endpoint-section">
+            <h2>Base URL</h2>
+            <div class="endpoint-url">
+                http://127.0.0.1:5000
+            </div>
+        </div>
+        
+        <div class="endpoint-section">
+            <h2><span class="method-badge">GET</span> Get Outfit Recommendations</h2>
+            
+            <div class="endpoint-url">
+                GET /api/recommend
+            </div>
+            
+            <p>Returns clothing outfit recommendations based on weather conditions and occasion.</p>
+            
+            <h3>Query Parameters</h3>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Parameter</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                        <th>Example</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>temp</code> <span class="optional-badge">optional</span></td>
+                        <td>float</td>
+                        <td>Temperature in Celsius (default: 20)</td>
+                        <td>25</td>
+                    </tr>
+                    <tr>
+                        <td><code>weather</code> <span class="optional-badge">optional</span></td>
+                        <td>string</td>
+                        <td>Weather condition (default: 'clear')</td>
+                        <td>sunny, cloudy, rainy, snowy</td>
+                    </tr>
+                    <tr>
+                        <td><code>occasion</code> <span class="optional-badge">optional</span></td>
+                        <td>string</td>
+                        <td>Occasion type (default: 'casual')</td>
+                        <td>casual, business, formal, sports</td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <h3>Example Request</h3>
+            <div class="code-block">
+curl "http://127.0.0.1:5000/api/recommend?temp=25&weather=sunny&occasion=casual"
+            </div>
+            
+            <h3>Example Response</h3>
+            <div class="code-block">
+{
+  "success": true,
+  "recommendations": [
+    {
+      "avg_score": 94.0,
+      "categories": ["Top", "Bottom", "Footwear", "Accessory"],
+      "pieces": [
+        {
+          "item_id": 1,
+          "item_name": "Cotton T-Shirt",
+          "category": "Top",
+          "warmth_level": 1,
+          "formality": 2,
+          "min_temp": 17,
+          "max_temp": 31,
+          "weather_tags": "hot,warm",
+          "occasion_tags": "casual,sports",
+          "color": "Blue",
+          "material": "Cotton"
+        },
+        ...
+      ],
+      "total_score": 376.0,
+      "weather_type": "sunny"
+    }
+  ]
+}
+            </div>
+            
+            <h3>Response Fields</h3>
+            <table class="params-table">
+                <thead>
+                    <tr>
+                        <th>Field</th>
+                        <th>Type</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>success</code></td>
+                        <td>boolean</td>
+                        <td>Whether the request was successful</td>
+                    </tr>
+                    <tr>
+                        <td><code>recommendations</code></td>
+                        <td>array</td>
+                        <td>List of outfit recommendations (up to 2)</td>
+                    </tr>
+                    <tr>
+                        <td><code>avg_score</code></td>
+                        <td>float</td>
+                        <td>Average suitability score (0-100)</td>
+                    </tr>
+                    <tr>
+                        <td><code>categories</code></td>
+                        <td>array</td>
+                        <td>Clothing categories in the outfit</td>
+                    </tr>
+                    <tr>
+                        <td><code>pieces</code></td>
+                        <td>array</td>
+                        <td>Individual clothing items in the outfit</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="endpoint-section">
+            <h2>Error Responses</h2>
+            <p>If an error occurs, the API returns:</p>
+            <div class="code-block">
+{
+  "success": false,
+  "error": "Error message description"
+}
+            </div>
+        </div>
+        
+        <div class="endpoint-section">
+            <h2>Usage Examples</h2>
+            
+            <h3>JavaScript (Fetch API)</h3>
+            <div class="code-block">
+fetch('http://127.0.0.1:5000/api/recommend?temp=20&weather=cloudy&occasion=business')
+  .then(response => response.json())
+  .then(data => {
+    console.log(data.recommendations);
+  })
+  .catch(error => console.error('Error:', error));
+            </div>
+            
+            <h3>Python (Requests)</h3>
+            <div class="code-block">
+import requests
+
+params = {
+    'temp': 20,
+    'weather': 'cloudy',
+    'occasion': 'business'
+}
+
+response = requests.get('http://127.0.0.1:5000/api/recommend', params=params)
+data = response.json()
+
+if data['success']:
+    for outfit in data['recommendations']:
+        print(f"Score: {outfit['avg_score']}")
+        for item in outfit['pieces']:
+            print(f"  - {item['category']}: {item['item_name']}")
+            </div>
+        </div>
+        
+        <footer style="text-align: center; margin-top: 50px; color: #999;">
+            <p>Daily Clothing Recommender System • Developed by Rayyan and Ali</p>
+        </footer>
+    </div>
+</body>
+</html>
