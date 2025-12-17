@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🌤️ Daily Clothing Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tshirt"></i> Daily Clothing Recommender</h1>
+            <p class="subtitle">Get personalized outfit suggestions based on weather and occasion</p>
+        </header>
+
+        <div class="main-content">
+            <div class="form-section">
+                <h2><i class="fas fa-sliders-h"></i> Enter Your Details</h2>
+                
+                <form action="/recommend" method="POST" class="recommendation-form">
+                    <div class="form-group">
+                        <label for="city"><i class="fas fa-city"></i> City (Optional)</label>
+                        <select id="city" name="city">
+                            <option value="">Select a city or enter manually</option>
+                            {% for city in cities %}
+                            <option value="{{ city }}">{{ city }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="temperature"><i class="fas fa-thermometer-half"></i> Temperature (°C)</label>
+                            <div class="temp-input">
+                                <input type="range" id="temp-slider" min="-10" max="40" value="20" 
+                                       oninput="updateTempValue(this.value)">
+                                <input type="number" id="temperature" name="temperature" 
+                                       value="20" min="-10" max="40" step="1"
+                                       oninput="updateTempSlider(this.value)">
+                                <span class="temp-unit">°C</span>
+                            </div>
+                            <div class="temp-indicator">
+                                <span class="temp-label">Cold</span>
+                                <span class="temp-label">Cool</span>
+                                <span class="temp-label">Mild</span>
+                                <span class="temp-label">Warm</span>
+                                <span class="temp-label">Hot</span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="weather_condition"><i class="fas fa-cloud-sun"></i> Weather Condition</label>
+                            <div class="weather-icons">
+                                {% for condition in weather_conditions %}
+                                <label class="weather-option">
+                                    <input type="radio" name="weather_condition" value="{{ condition }}"
+                                           {% if condition == 'clear' %}checked{% endif %}>
+                                    <div class="weather-icon">
+                                        {% if condition == 'clear' %}
+                                        <i class="fas fa-sun"></i>
+                                        {% elif condition == 'cloudy' %}
+                                        <i class="fas fa-cloud"></i>
+                                        {% elif condition == 'rainy' %}
+                                        <i class="fas fa-cloud-rain"></i>
+                                        {% elif condition == 'snowy' %}
+                                        <i class="fas fa-snowflake"></i>
+                                        {% else %}
+                                        <i class="fas fa-cloud-sun"></i>
+                                        {% endif %}
+                                        <span>{{ condition.title() }}</span>
+                                    </div>
+                                </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="occasion"><i class="fas fa-calendar-alt"></i> Occasion</label>
+                        <div class="occasion-options">
+                            {% for occasion in occasions %}
+                            <label class="occasion-option">
+                                <input type="radio" name="occasion" value="{{ occasion }}"
+                                       {% if occasion == 'casual' %}checked{% endif %}>
+                                <div class="occasion-icon">
+                                    {% if occasion == 'business' %}
+                                    <i class="fas fa-briefcase"></i>
+                                    {% elif occasion == 'formal' %}
+                                    <i class="fas fa-user-tie"></i>
+                                    {% elif occasion == 'sports' %}
+                                    <i class="fas fa-running"></i>
+                                    {% elif occasion == 'date' %}
+                                    <i class="fas fa-heart"></i>
+                                    {% elif occasion == 'beach' %}
+                                    <i class="fas fa-umbrella-beach"></i>
+                                    {% else %}
+                                    <i class="fas fa-user"></i>
+                                    {% endif %}
+                                    <span>{{ occasion.title() }}</span>
+                                </div>
+                            </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <i class="fas fa-magic"></i> Get Outfit Recommendations
+                    </button>
+                </form>
+
+                <div class="quick-options">
+                    <h3>Quick Settings:</h3>
+                    <div class="quick-buttons">
+                        <button class="quick-btn" onclick="setConditions(25, 'clear', 'casual')">
+                            <i class="fas fa-sun"></i> Summer Day
+                        </button>
+                        <button class="quick-btn" onclick="setConditions(5, 'rainy', 'business')">
+                            <i class="fas fa-umbrella"></i> Rainy Work Day
+                        </button>
+                        <button class="quick-btn" onclick="setConditions(-2, 'snowy', 'casual')">
+                            <i class="fas fa-snowflake"></i> Winter Outing
+                        </button>
+                        <button class="quick-btn" onclick="setConditions(18, 'cloudy', 'formal')">
+                            <i class="fas fa-cloud"></i> Formal Event
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-section">
+                <h2><i class="fas fa-info-circle"></i> How It Works</h2>
+                <div class="info-cards">
+                    <div class="info-card">
+                        <i class="fas fa-temperature-low"></i>
+                        <h3>Weather Analysis</h3>
+                        <p>Analyzes temperature and weather conditions to suggest appropriate clothing layers.</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-calendar-check"></i>
+                        <h3>Occasion Matching</h3>
+                        <p>Considers your activity or event to recommend outfits with appropriate formality.</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-tshirt"></i>
+                        <h3>Smart Recommendations</h3>
+                        <p>Uses rule-based logic and ML to suggest complete, coordinated outfits.</p>
+                    </div>
+                    <div class="info-card">
+                        <i class="fas fa-database"></i>
+                        <h3>Rich Dataset</h3>
+                        <p>Powered by a dataset of 90+ clothing items with detailed attributes.</p>
+                    </div>
+                </div>
+
+                <div class="stats">
+                    <h3><i class="fas fa-chart-bar"></i> System Stats</h3>
+                    <div class="stat-items">
+                        <div class="stat-item">
+                            <span class="stat-value">90+</span>
+                            <span class="stat-label">Clothing Items</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">8</span>
+                            <span class="stat-label">Weather Types</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">8</span>
+                            <span class="stat-label">Occasions</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-value">5</span>
+                            <span class="stat-label">Clothing Categories</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Daily Clothing Recommender System • Developed by Rayyan and Ali</p>
+            <p class="footer-links">
+                <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="/api-docs"><i class="fas fa-code"></i> API Docs</a>
+                <a href="/help"><i class="fas fa-question-circle"></i> Help</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function updateTempValue(val) {
+            document.getElementById('temperature').value = val;
+        }
+        
+        function updateTempSlider(val) {
+            document.getElementById('temp-slider').value = val;
+        }
+        
+        function setConditions(temp, weather, occasion) {
+            document.getElementById('temperature').value = temp;
+            document.getElementById('temp-slider').value = temp;
+            
+            document.querySelectorAll('input[name="weather_condition"]').forEach(radio => {
+                if (radio.value === weather) radio.checked = true;
+            });
+            
+            document.querySelectorAll('input[name="occasion"]').forEach(radio => {
+                if (radio.value === occasion) radio.checked = true;
+            });
+        }
+        
+        // Initialize with current location weather (demo)
+        function getLocationWeather() {
+            // In a real app, this would call a weather API
+            console.log("Location weather feature would be implemented with a weather API");
+        }
+        
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', getLocationWeather);
+    </script>
+</body>
+</html>
