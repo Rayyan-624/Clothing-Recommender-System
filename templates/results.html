@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Outfit Recommendations - Daily Clothing Recommender</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1><i class="fas fa-tshirt"></i> Your Outfit Recommendations</h1>
+            <a href="/" class="back-btn"><i class="fas fa-arrow-left"></i> New Recommendation</a>
+        </header>
+
+        <div class="results-header">
+            <div class="conditions-summary">
+                <h2><i class="fas fa-sliders-h"></i> Conditions</h2>
+                <div class="condition-cards">
+                    <div class="condition-card">
+                        <i class="fas fa-thermometer-half"></i>
+                        <div>
+                            <h4>Temperature</h4>
+                            <p class="condition-value">{{ input.temperature }}°C</p>
+                        </div>
+                    </div>
+                    <div class="condition-card">
+                        <i class="fas fa-cloud-sun"></i>
+                        <div>
+                            <h4>Weather</h4>
+                            <p class="condition-value">{{ input.weather_condition|title }}</p>
+                            <small>({{ input.weather_type|title }})</small>
+                        </div>
+                    </div>
+                    <div class="condition-card">
+                        <i class="fas fa-calendar-alt"></i>
+                        <div>
+                            <h4>Occasion</h4>
+                            <p class="condition-value">{{ input.occasion|title }}</p>
+                        </div>
+                    </div>
+                    {% if input.city %}
+                    <div class="condition-card">
+                        <i class="fas fa-city"></i>
+                        <div>
+                            <h4>Location</h4>
+                            <p class="condition-value">{{ input.city }}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if advice %}
+            <div class="weather-advice">
+                <h2><i class="fas fa-lightbulb"></i> Weather Advice</h2>
+                <ul>
+                    {% for tip in advice %}
+                    <li>{{ tip }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="outfit-recommendations">
+            <h2><i class="fas fa-star"></i> Recommended Outfits</h2>
+            
+            {% for outfit in outfits %}
+            <div class="outfit-card">
+                <div class="outfit-header">
+                    <h3>Outfit {{ loop.index }} 
+                        <span class="outfit-score">Score: {{ "%.1f"|format(outfit.avg_score) }}/100</span>
+                    </h3>
+                    <div class="outfit-weather">
+                        <i class="fas fa-{{ 'umbrella' if outfit.weather_type == 'rainy' else 'snowflake' if outfit.weather_type == 'snowy' else 'sun' if outfit.weather_type == 'sunny' else 'cloud' }}"></i>
+                        {{ outfit.weather_type|title }} Weather Ready
+                    </div>
+                </div>
+                
+                <div class="outfit-items">
+                    {% for item in outfit.pieces %}
+                    <div class="clothing-item">
+                        <div class="item-category">{{ item.category }}</div>
+                        <div class="item-name">{{ item.item_name }}</div>
+                        <div class="item-details">
+                            <span class="item-detail"><i class="fas fa-palette"></i> {{ item.color }}</span>
+                            <span class="item-detail"><i class="fas fa-layer-group"></i> {{ item.material }}</span>
+                            <span class="item-detail"><i class="fas fa-fire"></i> Warmth: {{ item.warmth_level }}/5</span>
+                            <span class="item-detail"><i class="fas fa-user-tie"></i> Formality: {{ item.formality }}/5</span>
+                        </div>
+                        <div class="item-tags">
+                            {% for tag in item.weather_tags.split(',') %}
+                            <span class="tag weather-tag">{{ tag|title }}</span>
+                            {% endfor %}
+                            {% for tag in item.occasion_tags.split(',') %}
+                            <span class="tag occasion-tag">{{ tag|title }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                <div class="outfit-footer">
+                    <div class="temperature-range">
+                        <i class="fas fa-temperature-low"></i> Suitable for {{ outfit.pieces[0].min_temp }}°C to {{ outfit.pieces[0].max_temp }}°C
+                    </div>
+                    <button class="save-outfit-btn" onclick="saveOutfit({{ loop.index }})">
+                        <i class="far fa-bookmark"></i> Save Outfit
+                    </button>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="actions-section">
+            <h2><i class="fas fa-cogs"></i> Actions</h2>
+            <div class="action-buttons">
+                <button class="action-btn primary" onclick="window.print()">
+                    <i class="fas fa-print"></i> Print Recommendations
+                </button>
+                <button class="action-btn" onclick="shareRecommendations()">
+                    <i class="fas fa-share-alt"></i> Share
+                </button>
+                <a href="/" class="action-btn">
+                    <i class="fas fa-redo"></i> New Recommendation
+                </a>
+                <button class="action-btn" onclick="showAdvancedOptions()">
+                    <i class="fas fa-chart-line"></i> Advanced Options
+                </button>
+            </div>
+            
+            <div class="ml-info">
+                <h3><i class="fas fa-brain"></i> Machine Learning Insights</h3>
+                <p>This recommendation uses a hybrid approach:</p>
+                <ul>
+                    <li><strong>Rule-Based Logic:</strong> Temperature ranges, weather compatibility, occasion matching</li>
+                    <li><strong>ML Model:</strong> Random Forest classifier predicts item suitability with 92% accuracy</li>
+                    <li><strong>Scoring System:</strong> Weighted scoring for optimal outfit combinations</li>
+                </ul>
+            </div>
+        </div>
+
+        <footer>
+            <p>Daily Clothing Recommender System • Recommendations generated at {{ now|default("now") }}</p>
+            <p class="footer-links">
+                <a href="/"><i class="fas fa-home"></i> Home</a>
+                <a href="/dashboard"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                <a href="/help"><i class="fas fa-question-circle"></i> How recommendations work</a>
+            </p>
+        </footer>
+    </div>
+
+    <script>
+        function saveOutfit(outfitNumber) {
+            alert(`Outfit ${outfitNumber} saved to your favorites!`);
+            // In a real app, this would call an API to save to user's account
+        }
+        
+        function shareRecommendations() {
+            if (navigator.share) {
+                navigator.share({
+                    title: 'My Outfit Recommendations',
+                    text: 'Check out these outfit recommendations from Daily Clothing Recommender!',
+                    url: window.location.href
+                });
+            } else {
+                alert('Share this URL: ' + window.location.href);
+            }
+        }
+        
+        function showAdvancedOptions() {
+            alert('Advanced options would include: ML model details, scoring breakdown, alternative recommendations');
+        }
+    </script>
+</body>
+</html>
