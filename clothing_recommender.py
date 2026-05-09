@@ -1,13 +1,24 @@
 import pandas as pd
 import json
 import random
-from typing import List, Dict, Tuple
+import os
+import requests
+from typing import List, Dict, Tuple, Optional
 
 class ClothingRecommender:
-    def __init__(self, dataset_path='data/clothing_dataset.csv'):
-        """Initialize the recommender system with clothing dataset"""
+    def __init__(self, dataset_path='data/clothing_dataset.csv', weather_api_key: Optional[str] = None):
+        """Initialize the recommender system with clothing dataset
+        
+        Args:
+            dataset_path: Path to the clothing dataset CSV
+            weather_api_key: OpenWeatherMap API key (uses env var OPENWEATHER_API_KEY if not provided)
+        """
         self.df = pd.read_csv(dataset_path)
         self.weather_mapping = self._load_weather_mapping()
+        
+        # Get API key from parameter, environment variable, or use demo key
+        self.weather_api_key = weather_api_key or os.environ.get('OPENWEATHER_API_KEY', 'demo')
+        self.weather_api_url = 'https://api.openweathermap.org/data/2.5/weather'
         self.occasion_formality = {
             'casual': 1,
             'business': 4,
@@ -23,6 +34,83 @@ class ClothingRecommender:
         """Load weather condition mappings"""
         with open('data/weather_codes.json', 'r') as f:
             return json.load(f)
+    
+    def fetch_live_weather(self, city: str) -> Dict:
+        """
+        Fetch live weather data from OpenWeatherMap API
+        
+        Args:
+            city: City name (e.g., 'London', 'New York')
+        
+        Returns:
+            Dictionary with temperature and weather condition
+        """
+        if self.weather_api_key == 'demo':
+            return {
+                'success': False, 
+                'error': 'OpenWeatherMap API key not configured. Set OPENWEATHER_API_KEY environment variable or pass it to ClothingRecommender(weather_api_key="your_key")'
+            }
+        
+        try:
+            params = {
+                'q': city,
+                'appid': self.weather_api_key,
+                'units': 'metric'  # Get temperature in Celsius
+            }
+            response = requests.get(self.weather_api_url, params=params, timeout=5)
+            response.raise_for_status()
+            
+            data = response.json()
+            temperature = data['main']['temp']
+            weather_main = data['weather'][0]['main'].lower()
+            weather_description = data['weather'][0]['description'].lower()
+            
+            # Map OpenWeatherMap condition to our categories
+            condition = self._map_weather_condition(weather_main, weather_description)
+            
+            return {
+                'success': True,
+                'temperature': temperature,
+                'weather_condition': condition,
+                'weather_main': weather_main,
+                'weather_description': weather_description,
+                'city': data['name'],
+                'country': data['sys']['country']
+            }
+        except requests.exceptions.Timeout:
+            return {'success': False, 'error': 'Weather API request timed out'}
+        except requests.exceptions.HTTPError as e:
+            if response.status_code == 401:
+                return {'success': False, 'error': 'Invalid API key. Get a free key from https://openweathermap.org/api'}
+            elif response.status_code == 404:
+                return {'success': False, 'error': f'City "{city}" not found'}
+            else:
+                return {'success': False, 'error': f'API Error: {response.status_code}'}
+        except requests.exceptions.RequestException as e:
+            return {'success': False, 'error': f'Failed to fetch weather: {str(e)}'}
+    
+    def _map_weather_condition(self, weather_main: str, description: str) -> str:
+        """
+        Map OpenWeatherMap conditions to our recommendation categories
+        """
+        weather_map = {
+            'clear': 'clear',
+            'clouds': 'cloudy',
+            'rain': 'rainy',
+            'drizzle': 'rainy',
+            'thunderstorm': 'thunderstorm',
+            'snow': 'snowy',
+            'mist': 'foggy',
+            'smoke': 'foggy',
+            'haze': 'foggy',
+            'dust': 'foggy',
+            'fog': 'foggy',
+            'sand': 'foggy',
+            'ash': 'foggy',
+            'squall': 'windy',
+            'tornado': 'windy'
+        }
+        return weather_map.get(weather_main, 'cloudy')
     
     def get_weather_type(self, temperature: float, condition: str) -> str:
         """Determine weather type based on temperature and condition"""

@@ -46,6 +46,21 @@
                         <div>
                             <h4>Location</h4>
                             <p class="condition-value">{{ input.city }}</p>
+                            {% if input.weather_info and input.weather_info.country %}
+                            <small>{{ input.weather_info.country }}</small>
+                            {% endif %}
+                        </div>
+                    </div>
+                    {% endif %}
+                    {% if input.weather_source %}
+                    <div class="condition-card">
+                        <i class="fas fa-{% if input.weather_source == 'live' %}satellite{% else %}keyboard{% endif %}"></i>
+                        <div>
+                            <h4>Data Source</h4>
+                            <p class="condition-value">{% if input.weather_source == 'live' %}<span style="color: #38a169;">✓ Live API</span>{% else %}Manual{% endif %}</p>
+                            {% if input.weather_source == 'live' and input.weather_info %}
+                            <small>{{ input.weather_info.description|title }}</small>
+                            {% endif %}
                         </div>
                     </div>
                     {% endif %}

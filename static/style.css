@@ -702,3 +702,100 @@ footer {
 
 .outfit-card:nth-child(2) { animation-delay: 0.1s; }
 .outfit-card:nth-child(3) { animation-delay: 0.2s; }
+
+/* Live Weather Integration Styles */
+.city-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.city-input-group select {
+    flex: 1;
+}
+
+.fetch-weather-btn {
+    background: linear-gradient(135deg, #48bb78 0%, #38a169 100%);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.3s;
+    white-space: nowrap;
+}
+
+.fetch-weather-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(72, 187, 120, 0.3);
+}
+
+.fetch-weather-btn:active {
+    transform: translateY(0);
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-weight: normal;
+    cursor: pointer;
+    user-select: none;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: auto;
+    margin: 0;
+    cursor: pointer;
+    accent-color: #667eea;
+}
+
+.weather-status {
+    margin-top: 12px;
+    padding: 12px 15px;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    min-height: 20px;
+}
+
+.weather-status span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.weather-status .success {
+    background: #c6f6d5;
+    color: #22543d;
+    border-left: 4px solid #38a169;
+    padding-left: 11px;
+}
+
+.weather-status .error {
+    background: #fed7d7;
+    color: #742a2a;
+    border-left: 4px solid #f56565;
+    padding-left: 11px;
+}
+
+.weather-status .loading {
+    background: #bee3f8;
+    color: #2c5282;
+    border-left: 4px solid #4299e1;
+    padding-left: 11px;
+}
+
+@keyframes spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.fa-spin {
+    animation: spin 1s linear infinite;
+}
+.outfit-card:nth-child(3) { animation-delay: 0.2s; }

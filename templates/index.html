@@ -21,12 +21,22 @@
                 <form action="/recommend" method="POST" class="recommendation-form">
                     <div class="form-group">
                         <label for="city"><i class="fas fa-city"></i> City (Optional)</label>
-                        <select id="city" name="city">
-                            <option value="">Select a city or enter manually</option>
-                            {% for city in cities %}
-                            <option value="{{ city }}">{{ city }}</option>
-                            {% endfor %}
-                        </select>
+                        <div class="city-input-group">
+                            <select id="city" name="city">
+                                <option value="">Select a city or enter manually</option>
+                                {% for city in cities %}
+                                <option value="{{ city }}">{{ city }}</option>
+                                {% endfor %}
+                            </select>
+                            <button type="button" class="fetch-weather-btn" onclick="fetchLiveWeather()" title="Fetch live weather for selected city">
+                                <i class="fas fa-cloud-download"></i> Fetch Weather
+                            </button>
+                        </div>
+                        <label class="checkbox-label">
+                            <input type="checkbox" id="use_live_weather" name="use_live_weather">
+                            <span><i class="fas fa-satellite"></i> Use live weather data when submitting</span>
+                        </label>
+                        <div id="weather-status" class="weather-status"></div>
                     </div>
 
                     <div class="form-row">
@@ -209,14 +219,47 @@
             });
         }
         
-        // Initialize with current location weather (demo)
-        function getLocationWeather() {
-            // In a real app, this would call a weather API
-            console.log("Location weather feature would be implemented with a weather API");
+        async function fetchLiveWeather() {
+            const cityInput = document.getElementById('city');
+            const city = cityInput.value.trim();
+            const statusDiv = document.getElementById('weather-status');
+            
+            if (!city) {
+                statusDiv.innerHTML = '<span class="error"><i class="fas fa-exclamation-circle"></i> Please select or enter a city</span>';
+                return;
+            }
+            
+            statusDiv.innerHTML = '<span class="loading"><i class="fas fa-spinner fa-spin"></i> Fetching weather...</span>';
+            
+            try {
+                const response = await fetch(`/api/weather?city=${encodeURIComponent(city)}`);
+                const data = await response.json();
+                
+                if (data.success) {
+                    // Update form with fetched data
+                    document.getElementById('temperature').value = Math.round(data.temperature);
+                    document.getElementById('temp-slider').value = Math.round(data.temperature);
+                    
+                    document.querySelectorAll('input[name="weather_condition"]').forEach(radio => {
+                        if (radio.value === data.weather_condition) radio.checked = true;
+                    });
+                    
+                    // Enable the checkbox
+                    document.getElementById('use_live_weather').checked = true;
+                    
+                    statusDiv.innerHTML = `<span class="success"><i class="fas fa-check-circle"></i> ${data.city}, ${data.country} • ${data.weather_description} • ${Math.round(data.temperature)}°C</span>`;
+                } else {
+                    statusDiv.innerHTML = `<span class="error"><i class="fas fa-times-circle"></i> ${data.error}</span>`;
+                }
+            } catch (error) {
+                statusDiv.innerHTML = `<span class="error"><i class="fas fa-times-circle"></i> Error: ${error.message}</span>`;
+            }
         }
         
         // Initialize on load
-        document.addEventListener('DOMContentLoaded', getLocationWeather);
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Live weather API integration ready");
+        });
     </script>
 </body>
 </html>
